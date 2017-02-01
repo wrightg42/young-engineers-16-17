@@ -29,20 +29,20 @@ void NRFSetup(void){
   Serial.println("End setup - NRF");
 }
  
-void NRFloop(void){
+void NRFLoop(void){
   if (radio.available()){
     radio.read(msg, radio.getDynamicPayloadSize());    
     Serial.println(msg[0]);
+    radio.stopListening();
     if (msg[0] == 115) {    
-      radio.stopListening();
       Serial.println("pinging back");
       delay(100);
       int data[4] = {111, 222, 333, 444};
       while (!radio.write(&data, sizeof(data))) { // Ping till it sends
       }
       Serial.println("Pinged");
-      radio.startListening();
     }
+    radio.startListening();
   }
 }
 

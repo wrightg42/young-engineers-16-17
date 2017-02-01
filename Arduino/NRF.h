@@ -1,3 +1,3 @@
 void NRFSetup( void );
-void NRFloop( void );
+void NRFLoop( void );
 
