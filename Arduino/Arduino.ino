@@ -7,6 +7,7 @@ void setup() {
   printf_begin();
   NRFSetup();
   RadioSetup();
+  GPSSetup();
 }
 
 void loop() {
