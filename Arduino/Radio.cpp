@@ -17,7 +17,7 @@ int GetSignalRight() {
     int value = rswitch.getReceivedValue();
     int protocol = rswitch.getReceivedProtocol();
     int rssi = analogRead(0);
-    if (value == 47869 && protocol == 3) {
+    if (value == 47869 && protocol == 5) {
       Serial.print("Package Received on right radio -> RSSI: ");
       Serial.println(rssi);
     } else {
@@ -43,7 +43,7 @@ int GetSignalLeft() {
     int value = lswitch.getReceivedValue();
     int protocol = lswitch.getReceivedProtocol();
     int rssi = analogRead(1);
-    if (value == 47869 && protocol == 3) {
+    if (value == 47869 && protocol == 5) {
       Serial.print("Package Received on left radio -> RSSI: ");
       Serial.println(rssi);
     } else {
