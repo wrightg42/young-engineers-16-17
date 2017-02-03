@@ -1,28 +1,13 @@
-
 #include <Adafruit_GPS.h>
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 
-// If using software serial, keep this line enabled
-// (you can change the pin numbers to match your wiring):
-SoftwareSerial mySerial(3, 2); // CHANGE THIS TO THE HARDWARE ONE FO
+//HardwareSerial mySerial = Serial2;
 
 
-// If using hardware serial (e.g. Arduino Mega), comment out the
-// above SoftwareSerial line, and enable this line instead
-// (you can change the Serial number to match your wiring):
+Adafruit_GPS GPS(&Serial2);
 
-//HardwareSerial mySerial = Serial1;
+#define GPSECHO  false // turn echoing to serial off
 
-
-Adafruit_GPS GPS(&mySerial);
-
-
-// Set GPSECHO to 'false' to turn off echoing the GPS data to the Serial console
-// Set to 'true' if you want to debug and listen to the raw GPS sentences. 
-#define GPSECHO  false
-
-// this keeps track of whether we're using the interrupt
-// off by default!
 boolean usingInterrupt = false;
 void useInterrupt(boolean); // Func prototype keeps Arduino 0023 happy
 
@@ -32,36 +17,16 @@ typedef union
  uint8_t bytes[4];
 } FLOATUNION_t;
 
-void GPSSetup()  
-{   
-  // connect at 115200 so we can read the GPS fast enough and echo without dropping chars
-  // also spit it out
-  GPS.begin(9600);
-  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA);
-  // Set the update rate
-  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   // 1 Hz update rate
-  // Request updates on antenna status, comment out to keep quiet
-  GPS.sendCommand(PGCMD_ANTENNA);
-  // the nice thing about this code is you can have a timer0 interrupt go off
-  // every 1 millisecond, and read data from the GPS for you. that makes the
-  // loop code a heck of a lot easier!
-  useInterrupt(true);
-  delay(1000);
-  // Ask for firmware version
-  mySerial.println(PMTK_Q_RELEASE);
-}
+
 
 
 // Interrupt is called once a millisecond, looks for any new GPS data, and stores it
 SIGNAL(TIMER0_COMPA_vect) {
   char c = GPS.read();
-  // if you want to debug, this is a good time to do it!
 }
 
 void useInterrupt(boolean v) {
   if (v) {
-    // Timer0 is already used for millis() - we'll just interrupt somewhere
-    // in the middle and call the "Compare A" function above
     OCR0A = 0xAF;
     TIMSK0 |= _BV(OCIE0A);
     usingInterrupt = true;
@@ -75,33 +40,45 @@ void useInterrupt(boolean v) {
 FLOATUNION_t lat;
 FLOATUNION_t lon;
 
-void GPSGetData(){
-  // if a sentence is received, we can check the checksum, parse it...
+
+void GPSSetup()  
+{   
+  Serial.println("Begin GPS Setup");
+  GPS.begin(9600);
+  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA); // Set the update rate
+  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   // 1 Hz update rate
+  GPS.sendCommand(PGCMD_ANTENNA);  // Request updates on antenna status, comment out to keep quiet
+  useInterrupt(true);
+  delay(1000);
+  Serial2.println(PMTK_Q_RELEASE);  // Ask for firmware version
+  Serial.println("End GPS Setup");
+}
+
+byte* GPSGetData(){
   if (GPS.newNMEAreceived()) {  
     if (!GPS.parse(GPS.lastNMEA()))
-      return;  // we can fail to parse a sentence in which case we should just wait for another
+      return {}; //return null if parse fails
   }
   
-  byte array[12] = {}; //byte array ready for sending
-  array[0] = (byte)(int)GPS.fix;
-  array[1] = (byte)(int)GPS.fixquality;
+  byte arr[12] = {}; // byte array ready for sending
+  arr[0] = (byte)(int)GPS.fix;
+  arr[1] = (byte)(int)GPS.fixquality;
   if (GPS.fix) {
-    lat.number = GPS.latitudeDegrees;    //use float and byte array union data type that i found on stack overflow to turn into byte array 
-    array[2] = lat.bytes[0]
-    array[3] = lat.bytes[1]
-    array[4] = lat.bytes[2]
-    array[5] = lat.bytes[3]
+    // use float and byte array union data type to turn float into byte array 
+    lat.number = GPS.latitudeDegrees;    
+    arr[2] = lat.bytes[0];
+    arr[3] = lat.bytes[1];
+    arr[4] = lat.bytes[2];
+    arr[5] = lat.bytes[3];
     
     lon.number = GPS.longitudeDegrees;
-    array[6] = long.bytes[0];
-    array[7] = long.bytes[1];
-    array[8] = long.bytes[2];
-    array[9] = long.bytes[3];
+    arr[6] = lon.bytes[0];
+    arr[7] = lon.bytes[1];
+    arr[8] = lon.bytes[2];
+    arr[9] = lon.bytes[3];
     
-    
-    
-    array[10] = (byte)(int)GPS.altitude;
-    array[11] = (byte)(int)GPS.satellites;
+    arr[10] = (byte)(int)GPS.altitude;
+    arr[11] = (byte)(int)GPS.satellites;
   }
   return arr;
 }

@@ -1,49 +1,42 @@
 // parse input
 
-void setup()  
-{   
-  Serial.begin(9600);
-  Serial.println("wroks");
-  GPSSetup();
-}
-
 
 int senddata(int array){
 }
 
 void processCommand(byte* comm)
 {
-  int operator = comm[0]
-  if (operator%2){
-    halt();
+  int operat = comm[0];
+  if (operat%2){
+    //halt();
   }
   else{
-    switch (operator/2){
+    switch (operat/2){
     case 0:
-      halt();
+      //halt();
       break;
     case 1:
-      forward();
+      //forward();
       break;
     case 2:
-      backward();
+      //backward();
       break;
     case 3:
-      left();
+      //left();
       break;
     case 4:
-      right();
+      //right();
       break;
     case 5:
-      byte data[] = GPSGetData();
-      byte data[] = {12} + data
+      //byte data* = GPSGetData();
+      //byte data* = {12} + data
       //sendData(data);
       break;
     case 6:
       break;
     case 7:
       break;
-    case 8;
+    case 8:
       break;
     }
   }
