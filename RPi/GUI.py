@@ -29,7 +29,7 @@ def init_window():
     window.mainloop()
 
 def run_logic():
-    Logic.main()
+    # Logic.main()
     window.after(Logic.ms_delay, run_logic)
 
 def init_controls():

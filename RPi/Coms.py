@@ -9,7 +9,6 @@ radio = NRF24()
 
 def init():
     global radio
-    radio = NRF24()
     radio.begin(0, 1, ce, irq)
     radio.setPayloadSize(32)
     radio.setChannel(0x60)
@@ -30,10 +29,10 @@ def print_details():
     radio.printDetails()
 
 def send(msg):
+    if not isinstance(msg, list):
+        msg = [int(msg)]
     global radio
-    radio.stopListening()
     radio.write(msg)
-    print(msg)
 
 def read():
     global radio
@@ -47,15 +46,5 @@ def read():
             break
     radio.stopListening()
     return msg if msg != [] else None
-
-#while True:
-#    radio.write([c])
-#    if radio.isAckPayloadAvailable():
-#        newBuff = []
-#        radio.read(newBuff, radio.getDynamicPayloadSize())
-#        print(newBuff)
-#    c += 1
-#    print(c)
-#    time.sleep(1)
    
 
