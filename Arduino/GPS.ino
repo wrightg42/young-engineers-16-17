@@ -1,4 +1,4 @@
-#include <Adafruit_GPS.h>
+/*#include <Adafruit_GPS.h>
 //#include <SoftwareSerial.h>
 
 //HardwareSerial mySerial = Serial2;
@@ -81,4 +81,4 @@ byte* GPSGetData(){
     arr[11] = (byte)(int)GPS.satellites;
   }
   return arr;
-}
+}*/

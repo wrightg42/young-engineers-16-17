@@ -1,4 +1,3 @@
-#include "Arduino.h"
 #include "SPI.h"
 #include "nRF24L01.h"
 #include "RF24.h"
@@ -9,7 +8,7 @@ RF24 radio(9,10);
 const uint64_t pipes[2] = { 0xE8E8E8E8E8LL, 0xE7E7E7E7E7LL };
 
 void NRFSetup(void){
-  Serial.println("Setup - NRF");
+  DEBUG_PRINTLN("Setup - NRF");
   radio.begin();
  
   radio.setPayloadSize(32);
@@ -26,22 +25,24 @@ void NRFSetup(void){
   radio.openWritingPipe(pipes[0]);
   radio.startListening();
   radio.printDetails();
-  Serial.println("End setup - NRF");
+  DEBUG_PRINTLN("End setup - NRF");
 }
  
 void NRFLoop(void){
   if (radio.available()){
     radio.read(msg, radio.getDynamicPayloadSize());    
-    Serial.println(msg[0]);
+    DEBUG_PRINTLN(msg[0]);
     radio.stopListening();
-    if (msg[0] == 115) {    
+    ProcessCommand(msg);
+    /*if (msg[0] == 115) {    
       Serial.println("pinging back");
       delay(100);
       int data[4] = {111, 222, 333, 444};
       while (!radio.write(&data, sizeof(data))) { // Ping till it sends
       }
       Serial.println("Pinged");
-    }
+      //radio.openReadingPipe(1, pipes[1]);
+    }*/
     radio.startListening();
   }
 }

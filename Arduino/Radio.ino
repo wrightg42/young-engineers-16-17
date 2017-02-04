@@ -1,4 +1,3 @@
-#include "Arduino.h"
 #include "RCSwitch.h"
 #include "RCSwitchB.h"
 
@@ -6,10 +5,10 @@ RCSwitch rswitch = RCSwitch();
 RCSwitchB lswitch = RCSwitchB();
 
 void RadioSetup() {
-  Serial.println("Begin Radio Setup");
+  DEBUG_PRINTLN("Begin Radio Setup");
   rswitch.enableReceive(2);
   lswitch.enableReceive(3);
-  Serial.println("End Radio Setup");
+  DEBUG_PRINTLN("End Radio Setup");
 }
 
 int GetSignalRight() {
@@ -18,22 +17,24 @@ int GetSignalRight() {
     int protocol = rswitch.getReceivedProtocol();
     int rssi = analogRead(0);
     if (value == 47869 && protocol == 5) {
-      Serial.print("Package Received on right radio -> RSSI: ");
-      Serial.println(rssi);
+      DEBUG_PRINTLN("Package Received on right radio -> RSSI: ");
+      DEBUG_PRINTLN(rssi);
     } else {
-      Serial.println("External package on right radio :");
-      Serial.print("\tReceived ");
-      Serial.print(value);
-      Serial.print(" / ");
-      Serial.print("Protocol: ");
-      Serial.println(protocol);
-      Serial.print("\tRSSI: ");
-      Serial.println(rssi);
+      DEBUG_PRINTLN("External package on right radio :");
+      DEBUG_PRINT("\tReceived ");
+      DEBUG_PRINT(value);
+      DEBUG_PRINT(" / ");
+      DEBUG_PRINT("Protocol: ");
+      DEBUG_PRINTLN(protocol);
+      DEBUG_PRINT("\tRSSI: ");
+      DEBUG_PRINTLN(rssi);
     }
 
     rswitch.resetAvailable();
 
     return rssi;
+  } else {
+    return 0;
   }
 }
 
@@ -44,22 +45,24 @@ int GetSignalLeft() {
     int protocol = lswitch.getReceivedProtocol();
     int rssi = analogRead(1);
     if (value == 47869 && protocol == 5) {
-      Serial.print("Package Received on left radio -> RSSI: ");
-      Serial.println(rssi);
+      DEBUG_PRINT("Package Received on left radio -> RSSI: ");
+      DEBUG_PRINTLN(rssi);
     } else {
-      Serial.println("External package on left radio:");
-      Serial.print("\tReceived ");
-      Serial.print(value);
-      Serial.print(" / ");
-      Serial.print("Protocol: ");
-      Serial.println(protocol);
-      Serial.print("\tRSSI: ");
-      Serial.println(rssi);
+      DEBUG_PRINTLN("External package on left radio:");
+      DEBUG_PRINT("\tReceived ");
+      DEBUG_PRINT(value);
+      DEBUG_PRINT(" / ");
+      DEBUG_PRINT("Protocol: ");
+      DEBUG_PRINTLN(protocol);
+      DEBUG_PRINT("\tRSSI: ");
+      DEBUG_PRINTLN(rssi);
     }
 
     lswitch.resetAvailable();
 
     return rssi;
+  } else {
+    return 0;
   }
 }
 
