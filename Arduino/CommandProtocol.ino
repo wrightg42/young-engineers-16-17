@@ -1,14 +1,3 @@
-
-
-
-int returnGPS(int arr){
-  
-}
-
-int return433(int arr){
-      
-}
-
 void ProcessCommand(int* comm){
   int operat = comm[0];
   if (operat%2){
@@ -44,13 +33,16 @@ void ProcessCommand(int* comm){
         DEBUG_PRINTLN("PI tried to send GPS data?");
         break;
       case 7:
+        ScanRadio();
         DEBUG_PRINTLN("433 requested");
         break;
       case 8:
         DEBUG_PRINTLN("PI tried to send 433 data?");
         break;
       default:
-        DEBUG_PRINTLN("unrecognised command");
+        DEBUG_PRINT("unrecognised command: ");
+        DEBUG_PRINTLN(operat);
+        break;
     }
   }
 }

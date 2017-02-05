@@ -17,13 +17,13 @@ void MovementSetup(){
 
 void Stop(){
   digitalWrite(left1, LOW);
+  digitalWrite(right1, LOW);
+  digitalWrite(left2, LOW);
   digitalWrite(right2, LOW);
-  digitalWrite(left1, LOW);
-  digitalWrite(right2, LOW);
-  DEBUG_PRINTLN("Stopped");   
+  //DEBUG_PRINTLN("Stopped");   
 }
 
-void Left(){  // dist in arbitrary units
+void Left(){
   digitalWrite(left1, HIGH);
   digitalWrite(left2, LOW);
   digitalWrite(right1, HIGH);
@@ -31,7 +31,7 @@ void Left(){  // dist in arbitrary units
 }
 
 
-void Right(){  // dist in arbitrary units
+void Right(){
   digitalWrite(left1, LOW);
   digitalWrite(left2, HIGH);
   digitalWrite(right1, LOW);
@@ -39,7 +39,7 @@ void Right(){  // dist in arbitrary units
 }
 
 
-void Forward(){  // dist in arbitrary units
+void Forward(){
   digitalWrite(left1, HIGH);
   digitalWrite(left2, LOW);   
   digitalWrite(right1, LOW);
@@ -47,7 +47,7 @@ void Forward(){  // dist in arbitrary units
 }
 
 
-void Backward(){  // dist in arbitrary units
+void Backward(){
   digitalWrite(left1, LOW);
   digitalWrite(left2, HIGH);
   digitalWrite(right1, HIGH);
