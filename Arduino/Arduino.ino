@@ -5,9 +5,11 @@
 #ifdef DEBUG
   #define DEBUG_PRINT(x) Serial.print(x)
   #define DEBUG_PRINTLN(x) Serial.println(x)
-  #define DEBIG_BEGIN(x) Serial.begin(x)
+  #define DEBUG_BEGIN(x) Serial.begin(x)
 #else
   #define DEBUG_PRINT(X)
+  #define DEBUG_PRINTLN(x)
+  #define DEBUG_BEGIN(x)
 #endif
 
 void setup() {

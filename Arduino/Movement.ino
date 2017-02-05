@@ -16,10 +16,11 @@ void MovementSetup(){
 }
 
 void Stop(){
-  digitalWrite(left1, HIGH);
-  digitalWrite(right2, HIGH);
-  digitalWrite(left1, HIGH);
-  digitalWrite(right2, HIGH);   
+  digitalWrite(left1, LOW);
+  digitalWrite(right2, LOW);
+  digitalWrite(left1, LOW);
+  digitalWrite(right2, LOW);
+  DEBUG_PRINTLN("Stopped");   
 }
 
 void Left(){  // dist in arbitrary units
