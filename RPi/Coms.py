@@ -29,9 +29,8 @@ def print_details():
     radio.printDetails()
 
 def send(msg):
-    if not isinstance(msg, list):
-        msg = [int(msg)]
-    global radio
+    #global radio
+    print(msg)
     radio.write(msg)
 
 def read():
