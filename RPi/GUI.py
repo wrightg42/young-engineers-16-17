@@ -57,6 +57,7 @@ def init_controls():
     rgt.bind("<ButtonRelease>", lambda *args: Logic.handle_key("right", False))
 
     # apply to key bindings
+    window.bind("<space>", lambda *args: Logic.scan())
     window.bind("<Key>", lambda *args: Logic.handle_key(args[0].char))
     window.bind("<Up>", lambda *args: Logic.handle_key("↑"))
     window.bind("<Down>", lambda *args: Logic.handle_key("↓"))
