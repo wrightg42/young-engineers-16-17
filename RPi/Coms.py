@@ -8,7 +8,6 @@ ce = 24
 radio = NRF24()
 
 def init():
-    global radio
     radio.begin(0, 1, ce, irq)
     radio.setPayloadSize(32)
     radio.setChannel(0x60)
@@ -29,21 +28,29 @@ def print_details():
     radio.printDetails()
 
 def send(msg):
-    #global radio
     print(msg)
     radio.write(msg)
 
 def read():
-    global radio
     msg = []
     radio.startListening()
+    radio.openReadingPipe(1, pipes[1])
+
     start = datetime.datetime.now()
     while (datetime.datetime.now() - start).seconds < 1:
-        if radio.available():
-            radio.read(msg, radio.getDynamicPayloadSize())
-            print(msg)
+        while radio.available():
+            data = []
+            radio.read(data, radio.getDynamicPayloadSize())
+            print(data)
+            msg.append(data)
+        if msg != []:
             break
+
+    print(msg)
     radio.stopListening()
+    radio.openWritingPipe(pipes[0])
+    radio.powerDown()
+    radio.powerUp()
     return msg if msg != [] else None
    
 

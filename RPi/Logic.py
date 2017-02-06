@@ -1,9 +1,8 @@
 import GUI
 import Coms
 
-ms_delay = 1000
 commands = [["forward", "w", "↑"], ["backward", "s", "↓"], ["left", "a", "←"], ["right", "d", "→"]]
-keys_down = ["Thing"]
+keys_down = []
 
 def move_change(cmd):
     # parse command
@@ -21,22 +20,19 @@ def move_change(cmd):
     Coms.send(cmd)
 
 def scan():
-    print("SCANNING")
     Coms.send(14)
     val = Coms.read()
 
-    print(val)
     if val == None:
         print("Timed Out")
     elif val[0] == 16:
-        print("recieved data", val)
-    Coms.send(0)
+        print("Recieved data: ", val)
     #if val != None: # only replot if gain value
         #GUI.add_scan_point(point, direction)
         #GUI.plot_grid()
 
 def handle_key(key, pressed = True):
-    #key = key.lower()
+    key = key.lower() # Convert to lower case incase shift was held during key press
     if pressed:
         if key in commands[0] or key in commands[1] or key in commands[2] or key in commands[3]:
             if key not in keys_down:

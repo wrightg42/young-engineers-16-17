@@ -23,14 +23,9 @@ def init_window():
     window.geometry("600x450")
     window.minsize(600, 450)
     window.grid_propagate(False)
-    window.after(Logic.ms_delay, run_logic) # runs logic after the set delay 
     init_controls()
     plot_grid()
     window.mainloop()
-
-def run_logic():
-    # Logic.main()
-    window.after(Logic.ms_delay, run_logic)
 
 def init_controls():
     # add labels
