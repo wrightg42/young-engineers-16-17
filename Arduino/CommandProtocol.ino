@@ -1,11 +1,14 @@
-void ProcessCommand(int* comm){
+#include <DueTimer.h>
+
+void ProcessCommand(int* comm) {
+  Timer1.stop(); // Stop itterupt mid processing
+
   int operat = comm[0];
-  if (operat%2){
+  if (operat % 2) {
     Stop();
     DEBUG_PRINTLN("Corrupted message");
-  }
-  else{
-    switch (operat/2){
+  }  else {
+    switch (operat / 2) {
       case 0:
         DEBUG_PRINTLN("Stop");
         Stop();
@@ -30,14 +33,14 @@ void ProcessCommand(int* comm){
         DEBUG_PRINTLN("GPS requested");
         break;
       case 6:
-        DEBUG_PRINTLN("PI tried to send GPS data?");
+        DEBUG_PRINTLN("PI tried to send GPS data");
         break;
       case 7:
+        DEBUG_PRINTLN("radio requested");
         ScanRadio();
-        DEBUG_PRINTLN("433 requested");
         break;
       case 8:
-        DEBUG_PRINTLN("PI tried to send 433 data?");
+        DEBUG_PRINTLN("PI tried to send 433 data");
         break;
       default:
         DEBUG_PRINT("unrecognised command: ");
@@ -45,4 +48,6 @@ void ProcessCommand(int* comm){
         break;
     }
   }
+
+  Timer1.start(1000);
 }

@@ -66,26 +66,13 @@ int GetSignalLeft() {
   }
 }
 
-void RadioLoop() {
-  GetSignalRight();
-  GetSignalLeft();
-}
-
-void ScanRadio(){
-  DEBUG_PRINTLN("433 Scan start");
-  byte scanData[5];
-  scanData[0] = (byte)16; // 16 is return 433 scan data command
-  int left = GetSignalLeft();
-  DEBUG_PRINTLN("left worked");
-  int right = GetSignalRight();
-  DEBUG_PRINTLN("right worked");
-  scanData[1] = highByte(GetSignalLeft());
-  scanData[2] = lowByte(GetSignalLeft());
-  scanData[3] = highByte(GetSignalRight());
-  scanData[4] = lowByte(GetSignalRight());
-  DEBUG_PRINT(scanData[2]);
+void ScanRadio() {
+  DEBUG_PRINTLN("radio Scan start");
+  int scanData[3] = { 16, 0, 0 }; // 16 is return 433 scan data command
+  scanData[1] = GetSignalLeft();
+  scanData[2] = GetSignalRight();
+  delayMicroseconds(10000); // Delay 10ms, giving pi time to swap to read mode
   NRFSend(scanData);
-  DEBUG_PRINTLN("  sent");
 }
 
 

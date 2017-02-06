@@ -1,5 +1,3 @@
-
-
 #include "printf.h"
 
 #define DEBUG
@@ -19,17 +17,13 @@
 void setup() {
   DEBUG_BEGIN(115200);
   DEBUG_PRINTLN("Setup Begin");
-  //printf_begin();
+  printf_begin();
   NRFSetup();
   MovementSetup();
-  //RadioSetup();
+  RadioSetup();
   //GPSSetup();
-  delay(1);
   DEBUG_PRINTLN("Setup End");
 }
 
 void loop() {
-  NRFLoop();
-  DEBUG_PRINTLN("Loop working");
-  //RadioLoop();
 }
