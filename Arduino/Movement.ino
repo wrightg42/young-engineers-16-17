@@ -8,7 +8,7 @@ void MovementSetup() {
   pinMode(left1, OUTPUT);
   pinMode(left2, OUTPUT);
   pinMode(right1, OUTPUT);
-  pinMode(right2, OUTPUT);
+  pinMode(right2, OUTPUT); 
   Stop();
   DEBUG_PRINTLN("Movement Setup End");
 }

@@ -11,23 +11,23 @@ void ProcessCommand(int* comm) {
     switch (operat / 2) {
       case 0:
         DEBUG_PRINTLN("Stop");
-        Stop();
+        //Stop();
         break;
       case 1:
         DEBUG_PRINTLN("Forward");
-        Forward();
+        //Forward();
         break;
       case 2:
         DEBUG_PRINTLN("Backward");
-        Backward();
+        //Backward();
         break;
       case 3:
         DEBUG_PRINTLN("Left");
-        Left();
+        //Left();
         break;
       case 4:
         DEBUG_PRINTLN("Right");
-        Right();
+        //Right();
         break;
       case 5:
         DEBUG_PRINTLN("GPS requested");
@@ -36,14 +36,14 @@ void ProcessCommand(int* comm) {
         DEBUG_PRINTLN("PI tried to send GPS data");
         break;
       case 7:
-        DEBUG_PRINTLN("radio requested");
+        DEBUG_PRINTLN("Radio requested");
         ScanRadio();
         break;
       case 8:
         DEBUG_PRINTLN("PI tried to send 433 data");
         break;
       default:
-        DEBUG_PRINT("unrecognised command: ");
+        DEBUG_PRINT("Unrecognised command: ");
         DEBUG_PRINTLN(operat);
         break;
     }

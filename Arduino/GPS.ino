@@ -43,15 +43,14 @@ FLOATUNION_t lon;
 
 void GPSSetup()  
 {   
-  Serial.println("Begin GPS Setup");
+  DEBUG_PRINTLN("Begin GPS Setup");
   GPS.begin(9600);
   GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA); // Set the update rate
   GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   // 1 Hz update rate
   GPS.sendCommand(PGCMD_ANTENNA);  // Request updates on antenna status, comment out to keep quiet
   useInterrupt(true);
-  delay(1000);
-  Serial2.println(PMTK_Q_RELEASE);  // Ask for firmware version
-  Serial.println("End GPS Setup");
+  DEBUG_PRINTLN(PMTK_Q_RELEASE);  // Ask for firmware version
+  DEBUG_PRINTLN("End GPS Setup");
 }
 
 byte* GPSGetData(){
