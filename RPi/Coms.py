@@ -41,16 +41,20 @@ def read():
         while radio.available():
             data = []
             radio.read(data, radio.getDynamicPayloadSize())
-            print(data)
-            msg.append(data)
+            msg.append(bytesToInt(data))
         if msg != []:
             break
 
-    print(msg)
+    print("msg: " + str(msg))
     radio.stopListening()
     radio.openWritingPipe(pipes[0])
     radio.powerDown()
     radio.powerUp()
     return msg if msg != [] else None
    
+def bytesToInt(bytes):
+    i = 0
+    for j in range(3, -1, -1):
+        i += bytes[j] << (8 * j)
 
+    return i
