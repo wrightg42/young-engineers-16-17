@@ -5,31 +5,25 @@ commands = [["forward", "w", "↑"], ["backward", "s", "↓"], ["left", "a", "�
 keys_down = []
 
 def move_change(cmd):
-    # parse command
     if cmd in commands[0]:
-        cmd = 2
+        cmd = 3
     elif cmd in commands[1]:
-        cmd = 4
+        cmd = 5
     elif cmd in commands[2]:
         cmd = 6
     elif cmd in commands[3]:
-        cmd = 8
+        cmd = 9
     else:
         cmd = 0
 
     Coms.send(cmd)
 
 def scan():
-    Coms.send(14)
+    Coms.send(15)
     val = Coms.read()
 
-    if val == None:
-        print("Timed Out")
-    elif val[0] == 16:
+    if val[0] == 17:
         print("Recieved data: ", val)
-    #if val != None: # only replot if gain value
-        #GUI.add_scan_point(point, direction)
-        #GUI.plot_grid()
 
 def handle_key(key, pressed = True):
     key = key.lower() # Convert to lower case incase shift was held during key press
