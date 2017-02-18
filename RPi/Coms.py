@@ -11,7 +11,7 @@ def init():
     radio.begin(0, 1, ce, irq)
     radio.setPayloadSize(32)
     radio.setChannel(0x60)
-    radio.setRetries(0,15)
+    radio.setRetries(5,15)
     radio.setDataRate(NRF24.BR_1MBPS)
     radio.setPALevel(NRF24.PA_MAX)
 
@@ -50,11 +50,15 @@ def read():
     radio.openWritingPipe(pipes[0])
     radio.powerDown()
     radio.powerUp()
-    return msg if msg != [] else None
+    if msg == []:
+        print("Timed Out")
+        return None
+    else:
+        return msg
    
 def bytesToInt(bytes):
     i = 0
-    for j in range(3, -1, -1):
+    for j in range(len(bytes) - 1, -1, -1):
         i += bytes[j] << (8 * j)
 
     return i
