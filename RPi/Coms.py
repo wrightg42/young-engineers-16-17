@@ -19,8 +19,11 @@ def init():
     radio.enableDynamicPayloads()
     radio.enableAckPayload()
 
-    radio.openWritingPipe(pipes[0])
+    radio.startListening()
     radio.openReadingPipe(1, pipes[1])
+    radio.stopListening()
+    radio.openWritingPipe(pipes[0])
+    radio.powerDown()
     radio.powerUp()
 
 def print_details():
