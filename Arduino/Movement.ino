@@ -3,6 +3,7 @@
 #define right1 52
 #define right2 53
 
+
 void MovementSetup() {
   DEBUG_PRINTLN("Movement Setup Begin");
   pinMode(left1, OUTPUT);
@@ -14,6 +15,7 @@ void MovementSetup() {
 }
 
 void Stop() {
+  
   digitalWrite(left1, LOW);
   digitalWrite(right1, LOW);
   digitalWrite(left2, LOW);
@@ -21,6 +23,9 @@ void Stop() {
 }
 
 void Left() {
+#ifdef DONTMOVE
+  return;
+#endif
   digitalWrite(left1, HIGH);
   digitalWrite(left2, LOW);
   digitalWrite(right1, HIGH);
@@ -29,6 +34,9 @@ void Left() {
 
 
 void Right() {
+#ifdef DONTMOVE
+  return;
+#endif
   digitalWrite(left1, LOW);
   digitalWrite(left2, HIGH);
   digitalWrite(right1, LOW);
@@ -37,6 +45,9 @@ void Right() {
 
 
 void Forward() {
+#ifdef DONTMOVE
+  return;
+#endif
   digitalWrite(left1, HIGH);
   digitalWrite(left2, LOW);
   digitalWrite(right1, LOW);
@@ -45,6 +56,9 @@ void Forward() {
 
 
 void Backward() {
+#ifdef DONTMOVE
+  return;
+#endif
   digitalWrite(left1, LOW);
   digitalWrite(left2, HIGH);
   digitalWrite(right1, HIGH);

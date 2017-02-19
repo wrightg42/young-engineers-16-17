@@ -59,7 +59,3 @@ void NRFSend(int* data, int dataLen) {
   radio.openReadingPipe(1, pipes[1]);
   radio.startListening();
 }
-
-
-
-

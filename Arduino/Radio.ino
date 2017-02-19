@@ -73,5 +73,3 @@ void ScanRadio() {
   delayMicroseconds(10000); // Delay 10ms, giving pi time to swap to read mode
   NRFSend(scanData, 3);
 }
-
-
