@@ -67,7 +67,7 @@ int GetSignalRight() {
 
 void ScanRadio() {
   DEBUG_PRINTLN("radio Scan start");
-  int scanData[3] = { 16 }; // 16 is return 433 scan data command
+  int scanData[3] = { 17 }; // 17 is return 433 scan data command
   scanData[1] = GetSignalLeft();
   scanData[2] = GetSignalRight();
   delayMicroseconds(10000); // Delay 10ms, giving pi time to swap to read mode
