@@ -22,6 +22,7 @@ void ProcessCommand(int command) {
       break;
     case 10:
       DEBUG_PRINTLN("GPS requested");
+      SendGPS();
       break;
     case 12:
       DEBUG_PRINTLN("PI tried to send GPS data");
