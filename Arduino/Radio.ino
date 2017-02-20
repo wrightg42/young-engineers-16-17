@@ -70,6 +70,8 @@ void ScanRadio() {
   int scanData[3] = { 16 }; // 16 is return 433 scan data command
   scanData[1] = GetSignalLeft();
   scanData[2] = GetSignalRight();
+  scanData[1] = 1000;
+  scanData[2] = 1000000;
   delayMicroseconds(10000); // Delay 10ms, giving pi time to swap to read mode
   NRFSend(scanData, 3);
 }

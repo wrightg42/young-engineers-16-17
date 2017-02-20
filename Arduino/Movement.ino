@@ -9,13 +9,13 @@ void MovementSetup() {
   pinMode(left1, OUTPUT);
   pinMode(left2, OUTPUT);
   pinMode(right1, OUTPUT);
-  pinMode(right2, OUTPUT); 
+  pinMode(right2, OUTPUT);
   Stop();
   DEBUG_PRINTLN("Movement Setup End");
 }
 
 void Stop() {
-  
+
   digitalWrite(left1, LOW);
   digitalWrite(right1, LOW);
   digitalWrite(left2, LOW);

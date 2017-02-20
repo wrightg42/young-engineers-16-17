@@ -1,14 +1,9 @@
-#include <DueTimer.h>
-
-void ProcessCommand(int* comm) {
-  Timer1.stop(); // Stop itterupt mid processing
-
-  int operat = comm[0];
-  if (operat % 2) {
+void ProcessCommand(int command) {
+  if (command % 2) {
     Stop();
     DEBUG_PRINTLN("Corrupted message");
   }  else {
-    switch (operat / 2) {
+    switch (command / 2) {
       case 0:
         DEBUG_PRINTLN("Stop");
         Stop();
@@ -44,10 +39,8 @@ void ProcessCommand(int* comm) {
         break;
       default:
         DEBUG_PRINT("Unrecognised command: ");
-        DEBUG_PRINTLN(operat);
+        DEBUG_PRINTLN(command);
         break;
     }
   }
-
-  Timer1.start(1000);
 }

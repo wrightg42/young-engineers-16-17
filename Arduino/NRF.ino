@@ -16,7 +16,7 @@ void NRFSetup(void) {
 
   radio.setPayloadSize(32);
   radio.setChannel(0x60);
-  radio.setRetries(0, 15);
+  radio.setRetries(5, 15);
   radio.setDataRate(RF24_1MBPS);
   radio.setPALevel(RF24_PA_MAX);
 
@@ -27,35 +27,37 @@ void NRFSetup(void) {
   radio.openReadingPipe(1, pipes[1]);
   radio.openWritingPipe(pipes[0]);
   radio.startListening();
-  
+
 #ifdef DEBUG
   radio.printDetails();
 #endif
 
-  Timer1.attachInterrupt(NRFReceive);
+  Timer1.attachInterrupt(NRFRead);
   Timer1.start(1000);
   DEBUG_PRINTLN("End setup - NRF");
 }
 
-void NRFReceive() {
+void NRFRead() {
   while (radio.available()) {
     radio.read(msg, radio.getDynamicPayloadSize());
-    ProcessCommand(msg);
+    queue.push(msg[0]);
   }
 }
 
 void NRFSend(int* data, int dataLen) {
   DEBUG_PRINTLN("Sending");
+  Timer1.stop(); // Stop interupt so it doesn't try read while sending
   radio.stopListening();
   for (int i = 0; i < dataLen; i++) {
     int curTime = millis();
     while (!radio.write(&data[i], sizeof(data[i]))) {
       if (millis() - curTime > TIMEOUT) {
-        DEBUG_PRINTLN("Timeout");
+        DEBUG_PRINTLN("Timed out");
         break;
       }
     }
   }
   radio.openReadingPipe(1, pipes[1]);
   radio.startListening();
+  Timer1.start(); 
 }
