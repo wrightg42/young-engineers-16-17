@@ -16,7 +16,7 @@ int GetSignalLeft() {
     int value = lswitch.getReceivedValue();
     int protocol = lswitch.getReceivedProtocol();
     int rssi = analogRead(0);
-    if (value == 47869 && protocol == 5) {
+    if (value == 47869 && protocol == 2) {
       DEBUG_PRINT("Package Received on left radio -> RSSI: ");
       DEBUG_PRINTLN(rssi);
     } else {
@@ -43,8 +43,8 @@ int GetSignalRight() {
     int value = rswitch.getReceivedValue();
     int protocol = rswitch.getReceivedProtocol();
     int rssi = analogRead(1);
-    if (value == 47869 && protocol == 5) {
-      DEBUG_PRINTLN("Package Received on right radio -> RSSI: ");
+    if (value == 47869 && protocol == 2) {
+      DEBUG_PRINT("Package Received on right radio -> RSSI: ");
       DEBUG_PRINTLN(rssi);
     } else {
       DEBUG_PRINTLN("External package on right radio :");
