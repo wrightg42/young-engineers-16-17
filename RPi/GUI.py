@@ -14,7 +14,7 @@ import Logic
 window = None
 scan_points = [[], []]
 path_points = [[], []]
-line_directions = []
+scan_radii = []
 
 def init_window():
     global window
@@ -24,6 +24,9 @@ def init_window():
     window.minsize(600, 450)
     window.grid_propagate(False)
     init_controls()
+    add_scan_point([1, 1], 3)
+    add_scan_point([6, 6], 5)
+    add_scan_point([3, 2], 10)
     plot_grid()
     window.mainloop()
 
@@ -84,24 +87,34 @@ def plot_grid():
     plot.grid(True)
     
     # plot location and path data
-    scan = plot.scatter(scan_points[0], scan_points[1], c="blue")
-    plot.plot(path_points[0], path_points[1], c="green", linestyle="--")
+    scan = plot.scatter(scan_points[0], scan_points[1], color="blue")
+    plot.plot(path_points[0], path_points[1], color="green", linestyle="--")
     
-    # get axis and set the limit
+    # get axis so they can 
     axes = plot.axis()
-    plot.axes.set_xlim([axes[0], axes[1]])
-    plot.axes.set_ylim([axes[2], axes[3]])
     
     # plots direction lines
-    for i in range(len(line_directions)):
-        next_point = [scan_points[0][i] + 9999999 * math.sin(math.radians(line_directions[i])), scan_points[1][i] + 9999999 * math.cos(math.radians(line_directions[i]))]
-        point = [[scan_points[0][i], next_point[0]], [scan_points[1][i], next_point[1]]]
-        plot.plot(point[0], point[1], c="red")
+    for i in range(len(scan_radii)):
+        dist = plt.Circle((scan_points[0][i], scan_points[1][i]), scan_radii[i], color="red", fill=False)
+        plot.add_artist(dist)
+
+        # adjust axis if circle off plot
+        axes = list(plot.axis())
+        if axes[0] > scan_points[0][i] - scan_radii[i]:
+            axes[0] = scan_points[0][i] - scan_radii[i]
+        if axes[1] < scan_points[0][i] + scan_radii[i]:
+            axes[1] = scan_points[0][i] + scan_radii[i]
+        if axes[2] > scan_points[1][i] - scan_radii[i]:
+            axes[2] = scan_points[1][i] - scan_radii[i]
+        if axes[3] < scan_points[1][i] + scan_radii[i]:
+            axes[3] = scan_points[1][i] + scan_radii[i]
+        plot.axes.set_xlim([axes[0], axes[1]])
+        plot.axes.set_ylim([axes[2], axes[3]])
 
     # plot legend
-    path = mlines.Line2D([], [], c="green", linestyle="--")
-    direct = mlines.Line2D([], [], c="red")
-    plot.legend([scan, direct, path] , ["Scan Points", "Direction of IED", "Bot Path"], loc="upper center", bbox_to_anchor=(0.48, -0.05), fancybox=True, shadow=True, ncol=5)
+    path = mlines.Line2D([], [], color="green", linestyle="--")
+    distance = mlines.Line2D([], [], color="red")
+    plot.legend([scan, distance, path] , ["Scan Points", "Distance of IED", "Bot Path"], loc="upper center", bbox_to_anchor=(0.48, -0.05), fancybox=True, shadow=True, ncol=5)
 
     # add to window
     canvas = FigureCanvasTkAgg(f, master=window)
@@ -112,12 +125,12 @@ def plot_grid():
     # add label
     header = tk.Label(window, text="Location", font=("Vera", 20)).grid(column=3, row=0, sticky="NSEW")
 
-def add_scan_point(point, direction):
+def add_scan_point(point, radius):
     # add point to plots
     global scan_points
-    global line_directions
+    global scan_radii
     scan_points[0].append(point[0])
     scan_points[1].append(point[1])
 
     # add direction
-    line_directions.append(direction)
+    scan_radii.append(radius)
