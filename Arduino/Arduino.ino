@@ -2,7 +2,7 @@
 #include <printf.h>
 
 #define DEBUG
-#define DONTMOVE
+//#define DONTMOVE
 
 #ifdef DEBUG
   #define DEBUG_BEGIN(x) Serial.begin(x)
