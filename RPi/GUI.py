@@ -134,3 +134,10 @@ def add_scan_point(point, radius):
 
     # add direction
     scan_radii.append(radius)
+
+def add_path_point(point):
+    # add point to path
+    global path_points
+    path_points[0].append(point[0])
+    path_points[1].append(point[1])
+    
