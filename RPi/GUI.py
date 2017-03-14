@@ -24,9 +24,6 @@ def init_window():
     window.minsize(600, 450)
     window.grid_propagate(False)
     init_controls()
-    add_scan_point([1, 1], 3)
-    add_scan_point([6, 6], 5)
-    add_scan_point([3, 2], 10)
     plot_grid()
     window.mainloop()
 
