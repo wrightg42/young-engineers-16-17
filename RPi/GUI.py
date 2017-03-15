@@ -86,10 +86,7 @@ def plot_grid():
     # plot location and path data
     scan = plot.scatter(scan_points[0], scan_points[1], color="blue")
     plot.plot(path_points[0], path_points[1], color="green", linestyle="--")
-    
-    # get axis so they can 
-    axes = plot.axis()
-    
+        
     # plots direction lines
     for i in range(len(scan_radii)):
         dist = plt.Circle((scan_points[0][i], scan_points[1][i]), scan_radii[i], color="red", fill=False)
