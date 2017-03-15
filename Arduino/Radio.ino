@@ -65,6 +65,27 @@ int GetSignalRight() {
   }
 }
 
+int GetPhoneDistance(){
+  int left = 0;
+  int right = 0;
+  int curTime = millis();
+  while ((left == 0) && (millis()-curTime < TIMEOUT)){
+    left = GetSignalLeft();
+  }
+  curTime = millis();
+  while ((right == 0) && (millis()-curTime < TIMEOUT)){
+    right = GetSignalRight();
+  }
+  float avgSgnl = left/2 + right/2;
+  DEBUG_PRINT("Average Signal Strength: ");
+  DEBUG_PRINTLN(avgSgnl);
+  int distance = int(avgSgnl);
+  DEBUG_PRINT("Phone Distance: ");
+  DEBUG_PRINTLN(distance);
+  return distance;
+}
+
+
 void ScanRadio() {
   DEBUG_PRINTLN("radio Scan start");
   int scanData[3] = { 17 }; // 17 is return 433 scan data command
