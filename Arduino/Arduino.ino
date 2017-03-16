@@ -33,8 +33,8 @@ void setup() {
 
 void loop() {
   // Process command if in queue
-  //if (!queue.isEmpty()) {
-  //  ProcessCommand(queue.pop());
-  //}
-  GetPhoneDistance();
+  if (!queue.isEmpty()) {
+    ProcessCommand(queue.pop());
+  }
+  //GetPhoneDistance();
 }

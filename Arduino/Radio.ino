@@ -1,6 +1,8 @@
 #include "RCSwitch.h"
 #include "RCSwitchB.h"
 
+#define RADIOTIMEOUT 100
+
 RCSwitch rswitch = RCSwitch();
 RCSwitchB lswitch = RCSwitchB();
 
@@ -69,17 +71,17 @@ int GetPhoneDistance(){
   int left = 0;
   int right = 0;
   int curTime = millis();
-  while ((left == 0) && (millis()-curTime < TIMEOUT)){
+  while ((left == 0) && (millis()-curTime < RADIOTIMEOUT)){
     left = GetSignalLeft();
   }
   curTime = millis();
-  while ((right == 0) && (millis()-curTime < TIMEOUT)){
+  while ((right == 0) && (millis()-curTime < RADIOTIMEOUT)){
     right = GetSignalRight();
   }
   float avgSgnl = left/2 + right/2;
   DEBUG_PRINT("Average Signal Strength: ");
   DEBUG_PRINTLN(avgSgnl);
-  int distance = int(avgSgnl);
+  int distance = int(avgSgnl * 10);
   DEBUG_PRINT("Phone Distance: ");
   DEBUG_PRINTLN(distance);
   return distance;
@@ -89,8 +91,7 @@ int GetPhoneDistance(){
 void ScanRadio() {
   DEBUG_PRINTLN("radio Scan start");
   int scanData[3] = { 17 }; // 17 is return 433 scan data command
-  scanData[1] = GetSignalLeft();
-  scanData[2] = GetSignalRight();
+  scanData[1] = GetPhoneDistance();
   delayMicroseconds(10000); // Delay 10ms, giving pi time to swap to read mode
-  NRFSend(scanData, 3);
+  NRFSend(scanData, 2);
 }
