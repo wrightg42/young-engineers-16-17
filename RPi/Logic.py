@@ -2,7 +2,7 @@ import GUI
 import Coms
 import struct
 
-commands = [["forward", "w", "↑"], ["backward", "s", "↓"], ["left", "a", "←"], ["right", "d", "→"]]
+commands = [["forward", "w", "up_arrow"], ["backward", "s", "down_arrow"], ["left", "a", "left_arrow"], ["right", "d", "right_arrow"]]
 keys_down = []
 
 def move_change(cmd):
@@ -20,16 +20,21 @@ def move_change(cmd):
     Coms.send(cmd)
 
 def scan():
-    Coms.send(15)
+    Coms.send(15) # Get phone distance
     val = Coms.read()
-
+    
     if val != None and val[0] == 17:
-        print("Recieved data: ", val)
+        radius = val[1] * 0.0000144503606 * 0.001# turn distance from mm into lat/long degrees
+        print("Phone distanc data:", val)
         Coms.send(10) # Get gps location of bot
         gps = Coms.read()
         if gps != None and gps[0] == 12:
             gps = parse_gps(gps)
-            print(gps)
+            print("GPS data:", gps)
+            GUI.add_scan_point([gps[3], gps[2]], radius)
+            GUI.plot_grid()
+        
+        
 
 def handle_key(key, pressed = True):
     key = key.lower() # Convert to lower case incase shift was held during key press
@@ -49,8 +54,8 @@ def parse_gps(data):
     gps_data = []
     gps_data.append(data[1]) # fix
     gps_data.append(data[2]) # fix quality
-    gps_data.append(struct.unpack("<f", struct.pack("4B", *data[3:7]))) # latitude
-    gps_data.append(struct.unpack("<f", struct.pack("4B", *data[7:11]))) # longitude
+    gps_data.append(struct.unpack("<f", struct.pack("4B", *data[3:7]))[0]) # latitude
+    gps_data.append(struct.unpack("<f", struct.pack("4B", *data[7:11]))[0]) # longitude
     gps_data.append(data[11]) # altitude
     gps_data.append(data[12]) # satellites
     return gps_data
