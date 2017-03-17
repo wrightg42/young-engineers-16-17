@@ -24,16 +24,17 @@ def scan():
     Coms.send(15) # Get phone distance
     val = Coms.read()
     
-    if val != None and val[0] == 17:
-        radius = val[1] * 0.0000144503606 * 0.001# turn distance from mm into lat/long degrees
-        print("Phone distanc data:", val)
-        Coms.send(10) # Get gps location of bot
-        gps = Coms.read()
-        if gps != None and gps[0] == 12:
-            gps = parse_gps(gps)
-            print("GPS data:", gps)
+    # Check scan data is valid, and within 50m radius
+    if val != None and val[0] == 17 and len(val) == 2 and val[1] <= 50000:
+        radius = val[1] * 0.0000144503606 * 0.001 # turn distance from mm into lat/long degrees
+        print("Phone distance:", radius)
+        
+        gps = get_gps_data()
+        if gps != None:
             GUI.add_scan_point([gps[3], gps[2]], radius)
             GUI.plot_grid()
+    else:
+        print("Invalid scan data")
 
 def handle_key(key, pressed = True):
     key = key.lower() # Convert to lower case incase shift was held during key press
@@ -48,6 +49,26 @@ def handle_key(key, pressed = True):
         # change the movement if key was released
         keys_down.remove(key)
         move_change(keys_down[-1] if len(keys_down) != 0 else 0)
+
+def get_gps_data():
+    # Get gps location of bot
+    Coms.send(10) 
+    gps = Coms.read()
+
+    # Check GPS data is valid
+    if gps != None and gps[0] == 12 and len(gps) == 13: 
+        gps = parse_gps(gps)
+        print("GPS data:", gps)
+
+        # Only return data if we had gps fix
+        if gps[0] > 0 and gps[1] > 0:
+            return gps
+        else:
+            print("No GPS fix")
+            return None
+    else:
+        print("Invalid GPS data")
+        return None
 
 def parse_gps(data):
     gps_data = []
