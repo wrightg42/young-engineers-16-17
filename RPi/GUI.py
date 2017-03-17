@@ -23,9 +23,14 @@ def init_window():
     window.geometry("600x450")
     window.minsize(600, 450)
     window.grid_propagate(False)
+    window.after(500, check_stop_command) # Resends the stop move command if bot not in motion after 500 ms
     init_controls()
     plot_grid()
     window.mainloop()
+
+def check_stop_command():
+    Logic.move_change(0 if len(Logic.keys_down) == 0)
+    window.after(500, check_stop_command)
 
 def init_controls():
     # add labels
@@ -93,7 +98,7 @@ def plot_grid():
     # plots direction lines
     for i in range(len(scan_radii)):
         dist = plt.Circle((scan_points[0][i], scan_points[1][i]), scan_radii[i], color=(1, 0, 0, 1), fill=False)
-        dist_fill = plt.Circle((scan_points[0][i], scan_points[1][i]), scan_radii[i], color=(1, 0, 0, 0.1))
+        dist_fill = plt.Circle((scan_points[0][i], scan_points[1][i]), scan_radii[i], color=(1, 0, 0, 0.05))
         plot.add_artist(dist)
         plot.add_artist(dist_fill)
 
