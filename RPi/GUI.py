@@ -92,8 +92,10 @@ def plot_grid():
 
     # plots direction lines
     for i in range(len(scan_radii)):
-        dist = plt.Circle((scan_points[0][i], scan_points[1][i]), scan_radii[i], color="red", fill=False)
+        dist = plt.Circle((scan_points[0][i], scan_points[1][i]), scan_radii[i], color=(1, 0, 0, 1), fill=False)
+        dist_fill = plt.Circle((scan_points[0][i], scan_points[1][i]), scan_radii[i], color=(1, 0, 0, 0.1))
         plot.add_artist(dist)
+        plot.add_artist(dist_fill)
 
         # adjust axis if circle off plot
         axes = list(plot.axis())
