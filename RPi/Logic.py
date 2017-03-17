@@ -4,6 +4,7 @@ import struct
 
 commands = [["forward", "w", "up_arrow"], ["backward", "s", "down_arrow"], ["left", "a", "left_arrow"], ["right", "d", "right_arrow"]]
 keys_down = []
+tracking = True
 time_since_turn = 9500
 
 def move_change(cmd):
@@ -47,7 +48,7 @@ def handle_key(key, pressed = True):
                 move_change(key)
 
                 # Get gps data to track bot if we changed direction
-                if key in commands[2] or key in commands[3]:
+                if tracking and key in commands[2] or key in commands[3]:
                     # Make sure we havn't turned recently since plotting is time consuming
                     if time_since_turn > 10000:
                         gps = get_gps_data()
