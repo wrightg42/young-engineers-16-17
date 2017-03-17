@@ -32,6 +32,12 @@ def print_details():
 
 def send(msg):
     print(msg)
+    radio.startListening()
+    radio.openReadingPipe(1, pipes[1])
+    radio.stopListening()
+    radio.openWritingPipe(pipes[0])
+    radio.powerDown()
+    radio.powerUp()
     radio.write(msg)
 
 def read(timeout = 1000):
@@ -44,10 +50,16 @@ def read(timeout = 1000):
     while (datetime.datetime.now() - start).total_seconds() * 1000 < timeout:
         while radio.available():
             data = []
+            data_as_int = 0
+            data_check = []
             radio.read(data, radio.getDynamicPayloadSize())
-            if corrupted_bytes(data):
-                currupt = True
-            data = fix_bytes(data)
+            if radio.available():
+                radio.read(data_check, radio.getDynamicPayloadSize())
+                data_as_int = bytes_to_int(data)
+                if data_as_int + bytes_to_int(data_check) != (2**32 - 1):
+                    corrupt = True
+            else:
+                corrupt = True
             msg.append(bytes_to_int(data))
         if msg != []:
             break
@@ -66,34 +78,9 @@ def read(timeout = 1000):
     else:
         return msg
 
-def corrupted_bytes(bytes):
-    # Check each byte hasn't been corrupted
-    for byte in bytes:
-        binary = bin(byte)[2:]
-        if len(binary) % 2 == 1:
-            binary = "0" + binary
-        for i in range(int(len(binary) / 2)):
-            if binary[2 * i] == binary[2 * i + 1]:
-                return True
-    
-    return False
-
-def fix_bytes(bytes):
-    new_bytes = []
-
-    # Fix each byte tp remove the security from corruption
-    for byte in bytes:
-        binary = bin(byte)[2:]
-        if len(binary) % 2 == 1:
-            binary = "0" + binary
-        new_byte = binary[::2]
-        new_bytes.append(int(new_byte, 2))
-
-    return new_bytes
-
 def bytes_to_int(bytes):
     i = 0
     for j in range(len(bytes) - 1, -1, -1):
-        i += bytes[j] << (4 * j)
+        i += bytes[j] << (8 * j)
 
     return i
