@@ -19,7 +19,6 @@ void MovementSetup() {
 }
 
 void Stop() {
-
   digitalWrite(left1, LOW);
   digitalWrite(right1, LOW);
   digitalWrite(left2, LOW);
@@ -36,7 +35,6 @@ void Right() {
   digitalWrite(right2, LOW);
 }
 
-
 void Left() {
 #ifdef DONTMOVE
   return;
@@ -47,7 +45,6 @@ void Left() {
   analogWrite(right2, right2bias);
 }
 
-
 void Forward() {
 #ifdef DONTMOVE
   return;
@@ -57,7 +54,6 @@ void Forward() {
   digitalWrite(right1, LOW);
   analogWrite(right2, right2bias);
 }
-
 
 void Backward() {
 #ifdef DONTMOVE

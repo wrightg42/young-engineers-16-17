@@ -49,17 +49,23 @@ void NRFSend(int* data, int dataLen) {
   Timer1.stop(); // Stop interupt so it doesn't try read while sending
   radio.stopListening();
   for (int i = 0; i < dataLen; i++) {
-    // Convert int to secure payload
-    long secured = 0;
+    // Convert int to reverse to check corruption
+    int check = 0;
     for (int j = 0; j < sizeof(data[i]) * 8; j++) {
       int currentBit = bitRead(data[i], j);
-      bitWrite(secured, 2 * j + 1, currentBit);
-      bitWrite(secured, 2 * j, (currentBit + 1) % 2);
+      bitWrite(check, j, (currentBit + 1) % 2);
     }
 
     // Transmit message
     int curTime = millis();
-    while (!radio.write(&secured, sizeof(secured))) {
+    while (!radio.write(&data[i], sizeof(data[i]))) {
+      if (millis() - curTime > TIMEOUT) {
+        DEBUG_PRINTLN("Timed out");
+        break;
+      }
+    }
+    curTime = millis();
+    while (!radio.write(&check, sizeof(check))) {
       if (millis() - curTime > TIMEOUT) {
         DEBUG_PRINTLN("Timed out");
         break;

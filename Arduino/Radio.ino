@@ -90,7 +90,17 @@ int GetPhoneDistance(){
   float avgSignal = (left + right) / 2;
   DEBUG_PRINT("Average Signal Strength: ");
   DEBUG_PRINTLN(avgSignal);
-  float distance = int(7.267 * pow(10, 5) * pow(exp(1), -0.013 * avgSignal) - 1);
+  int distance = int(-15.43 * avgSignal + 9682.7); // Linear when near
+  if (avgSignal < 350) {
+    // Exponential graph more appropriate when far
+    distance = int(7.267 * pow(10, 5) * pow(exp(1), -0.013 * avgSignal) - 1);
+  }
+
+  // Make sure we don't send a negative value as this would become unused data
+  if (distance < 0) {
+    distance = 0;
+  }
+  
   DEBUG_PRINT("Phone Distance: ");
   DEBUG_PRINTLN(distance);
   return distance;
