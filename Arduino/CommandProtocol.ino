@@ -29,7 +29,7 @@ void ProcessCommand(int command) {
       break;
     case 15:
       DEBUG_PRINTLN("Radio requested");
-      ScanRadio();
+      SendRadioScan();
       break;
     case 17:
       DEBUG_PRINTLN("PI tried to send 433 data");

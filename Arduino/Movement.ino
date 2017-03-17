@@ -8,7 +8,6 @@
 #define right1bias 230
 #define right2bias 230
 
-
 void MovementSetup() {
   DEBUG_PRINTLN("Movement Setup Begin");
   pinMode(left1, OUTPUT);

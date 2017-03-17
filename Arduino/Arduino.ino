@@ -36,5 +36,4 @@ void loop() {
   if (!queue.isEmpty()) {
     ProcessCommand(queue.pop());
   }
-  //GetPhoneDistance();
 }
