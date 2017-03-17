@@ -4,6 +4,7 @@ import struct
 
 commands = [["forward", "w", "up_arrow"], ["backward", "s", "down_arrow"], ["left", "a", "left_arrow"], ["right", "d", "right_arrow"]]
 keys_down = []
+time_since_turn = 9500
 
 def move_change(cmd):
     if cmd in commands[0]:
@@ -26,7 +27,7 @@ def scan():
     
     # Check scan data is valid, and within 50m radius
     if val != None and val[0] == 17 and len(val) == 2 and val[1] <= 50000:
-        radius = val[1] * 0.0000144503606 * 0.001 # turn distance from mm into lat/long degrees
+        radius = val[1] * 0.0000144503606 * 0.001 # Turn distance from mm into lat/long degrees
         print("Phone distance:", radius)
         
         gps = get_gps_data()
@@ -44,9 +45,21 @@ def handle_key(key, pressed = True):
                 # Move key pressed, handle movement
                 keys_down.append(key)
                 move_change(key)
-                return
+
+                # Get gps data to track bot if we changed direction
+                if key in commands[2] or key in commands[3]:
+                    # Make sure we havn't turned recently since plotting is time consuming
+                    if time_since_turn > 10000:
+                        gps = get_gps_data()
+                        if gps != None:
+                            GUI.add_path_point([gps[3], gps[2]])
+                            GUI.plot_grid()
+                        else:
+                            return
+                    global time_since_turn
+                    time_since_turn = 0
     elif key in keys_down:
-        # change the movement if key was released
+        # Change the movement if key was released
         keys_down.remove(key)
         move_change(keys_down[-1] if len(keys_down) != 0 else 0)
 
@@ -61,7 +74,7 @@ def get_gps_data():
         print("GPS data:", gps)
 
         # Only return data if we had gps fix
-        if gps[0] > 0 and gps[1] > 0:
+        if gps[0] > 0:
             return gps
         else:
             print("No GPS fix")
@@ -72,10 +85,10 @@ def get_gps_data():
 
 def parse_gps(data):
     gps_data = []
-    gps_data.append(data[1]) # fix
-    gps_data.append(data[2]) # fix quality
-    gps_data.append(struct.unpack("<f", struct.pack("4B", *data[3:7]))[0]) # latitude
-    gps_data.append(struct.unpack("<f", struct.pack("4B", *data[7:11]))[0]) # longitude
-    gps_data.append(data[11]) # altitude
-    gps_data.append(data[12]) # satellites
+    gps_data.append(data[1]) # Fix
+    gps_data.append(data[2]) # Fix quality
+    gps_data.append(struct.unpack("<f", struct.pack("4B", *data[3:7]))[0]) # Latitude
+    gps_data.append(struct.unpack("<f", struct.pack("4B", *data[7:11]))[0]) # Longitude
+    gps_data.append(data[11]) # Altitude
+    gps_data.append(data[12]) # Satellites
     return gps_data

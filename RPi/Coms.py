@@ -1,6 +1,7 @@
 import datetime
 import RPi.GPIO as GPIO
 from nrf24 import *
+from time import sleep
 
 pipes = [[0xe7, 0xe7, 0xe7, 0xe7, 0xe7], [0xe8, 0xe8, 0xe8, 0xe8, 0xe8]]
 irq = 16
@@ -32,12 +33,6 @@ def print_details():
 
 def send(msg):
     print(msg)
-    radio.startListening()
-    radio.openReadingPipe(1, pipes[1])
-    radio.stopListening()
-    radio.openWritingPipe(pipes[0])
-    radio.powerDown()
-    radio.powerUp()
     radio.write(msg)
 
 def read(timeout = 1000):
@@ -53,6 +48,7 @@ def read(timeout = 1000):
             data_as_int = 0
             data_check = []
             radio.read(data, radio.getDynamicPayloadSize())
+            sleep(0.01)
             if radio.available():
                 radio.read(data_check, radio.getDynamicPayloadSize())
                 data_as_int = bytes_to_int(data)

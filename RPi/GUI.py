@@ -29,7 +29,9 @@ def init_window():
     window.mainloop()
 
 def check_stop_command():
-    Logic.move_change(0 if len(Logic.keys_down) == 0)
+    Logic.time_since_turn += 500
+    if len(Logic.keys_down) == 0:
+        Logic.move_change(0)
     window.after(500, check_stop_command)
 
 def init_controls():
@@ -92,8 +94,8 @@ def plot_grid():
     scan = plot.scatter(scan_points[0], scan_points[1], color="blue")
     plot.plot(path_points[0], path_points[1], color="green", linestyle="--")
     if len(scan_radii) > 0:
-        plot.axes.set_xlim(scan_points[0][0] - scan_radii[0], scan_points[0][0] + scan_radii[0])
-        plot.axes.set_ylim(scan_points[1][0] - scan_radii[0], scan_points[1][0] + scan_radii[0])
+        plot.axes.set_xlim(scan_points[0][0] - scan_radii[0] - 0.00001, scan_points[0][0] + scan_radii[0] + 0.00001)
+        plot.axes.set_ylim(scan_points[1][0] - scan_radii[0] - 0.00001, scan_points[1][0] + scan_radii[0] + 0.00001)
 
     # plots direction lines
     for i in range(len(scan_radii)):
