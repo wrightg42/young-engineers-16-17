@@ -28,11 +28,9 @@ def init():
     radio.powerUp()
 
 def print_details():
-    global radio
     radio.printDetails()
 
 def send(msg):
-    print(msg)
     radio.write(msg)
 
 def read(timeout = 1000):
@@ -60,7 +58,7 @@ def read(timeout = 1000):
         if msg != []:
             break
 
-    print("msg: " + str(msg))
+    print("recieved: " + str(msg))
     radio.stopListening()
     radio.openWritingPipe(pipes[0])
     radio.powerDown()
