@@ -20,6 +20,7 @@ def move_change(cmd):
     Coms.send(cmd)
 
 def scan():
+    Coms.send(0) # Stop bot moving while scanning
     Coms.send(15) # Get phone distance
     val = Coms.read()
     
@@ -33,8 +34,6 @@ def scan():
             print("GPS data:", gps)
             GUI.add_scan_point([gps[3], gps[2]], radius)
             GUI.plot_grid()
-        
-        
 
 def handle_key(key, pressed = True):
     key = key.lower() # Convert to lower case incase shift was held during key press
