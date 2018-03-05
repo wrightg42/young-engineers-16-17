@@ -9,7 +9,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.figure import Figure
 from tkinter import Grid
 
-import Logic
+import logic
 
 window = None
 scan_points = [[], []]
