@@ -1,5 +1,5 @@
-import GUI
-import Coms
+import gui
+import coms
 import struct
 
 commands = [["forward", "w", "up_arrow"], ["backward", "s", "down_arrow"], ["left", "a", "left_arrow"], ["right", "d", "right_arrow"]]
