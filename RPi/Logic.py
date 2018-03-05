@@ -6,6 +6,7 @@ commands = [["forward", "w", "up_arrow"], ["backward", "s", "down_arrow"], ["lef
 keys_down = []
 tracking = True
 time_since_turn = 9500
+get_gps = False
 
 def move_change(cmd):
     if cmd in commands[0]:
@@ -29,7 +30,7 @@ def scan():
     # Check scan data is valid, and within 50m radius
     if val != None and val[0] == 17 and len(val) == 2 and val[1] <= 50000:
         radius = val[1] * 0.0000144503606 * 0.001 # Turn distance from mm into lat/long degrees
-        print("Phone distance:", radius)
+        print("Phone distance:", val[1], "mm, ", radius, " lat/long distance")
         
         gps = get_gps_data()
         if gps != None:
@@ -65,24 +66,28 @@ def handle_key(key, pressed = True):
         move_change(keys_down[-1] if len(keys_down) != 0 else 0)
 
 def get_gps_data():
-    # Get gps location of bot
-    Coms.send(10) 
-    gps = Coms.read()
+    # Check gps is wanted
+    if get_gps:
+        # Get gps location of bot
+        Coms.send(10) 
+        gps = Coms.read()
 
-    # Check GPS data is valid
-    if gps != None and gps[0] == 12 and len(gps) == 13: 
-        gps = parse_gps(gps)
-        print("GPS data:", gps)
+        # Check GPS data is valid
+        if gps != None and gps[0] == 12 and len(gps) == 13: 
+            gps = parse_gps(gps)
+            print("GPS data:", gps)
 
-        # Only return data if we had gps fix
-        if gps[0] > 0:
-            return gps
+            # Only return data if we had gps fix
+            if gps[0] > 0:
+                return gps
+            else:
+                print("No GPS fix")
         else:
-            print("No GPS fix")
-            return None
+            print("Invalid GPS data")
     else:
-        print("Invalid GPS data")
-        return None
+        print("No GPS fix")
+   
+    return None
 
 def parse_gps(data):
     gps_data = []
