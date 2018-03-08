@@ -20,12 +20,12 @@ def move_change(cmd):
     else:
         cmd = 0
 
-    Coms.send(cmd)
+    coms.send(cmd)
 
 def scan():
-    Coms.send(0) # Stop bot moving while scanning
-    Coms.send(15) # Get phone distance
-    val = Coms.read()
+    coms.send(0) # Stop bot moving while scanning
+    coms.send(15) # Get phone distance
+    val = coms.read()
     
     # Check scan data is valid, and within 50m radius
     if val != None and val[0] == 17 and len(val) == 2 and val[1] <= 50000:
@@ -34,8 +34,8 @@ def scan():
         
         gps = get_gps_data()
         if gps != None:
-            GUI.add_scan_point([gps[3], gps[2]], radius)
-            GUI.plot_grid()
+            gui.add_scan_point([gps[3], gps[2]], radius)
+            gui.plot_grid()
     else:
         print("Invalid scan data")
 
@@ -54,8 +54,8 @@ def handle_key(key, pressed = True):
                     if time_since_turn > 10000:
                         gps = get_gps_data()
                         if gps != None:
-                            GUI.add_path_point([gps[3], gps[2]])
-                            GUI.plot_grid()
+                            gui.add_path_point([gps[3], gps[2]])
+                            gui.plot_grid()
                         else:
                             return
                     global time_since_turn
@@ -69,7 +69,7 @@ def get_gps_data():
     # Check gps is wanted
     if get_gps:
         # Get gps location of bot
-        Coms.send(10) 
+        coms.send(10) 
         gps = Coms.read()
 
         # Check GPS data is valid
