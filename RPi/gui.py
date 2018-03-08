@@ -29,9 +29,9 @@ def init_window():
     window.mainloop()
 
 def check_stop_command():
-    Logic.time_since_turn += 500
-    if len(Logic.keys_down) == 0:
-        Logic.move_change(0)
+    logic.time_since_turn += 500
+    if len(logic.keys_down) == 0:
+        logic.move_change(0)
     window.after(500, check_stop_command)
 
 def init_controls():
@@ -51,30 +51,30 @@ def init_controls():
     scn.grid(row=3, column=0, sticky="SEW")
 
     # add handlers for button presses
-    fwd.bind("<ButtonPress>", lambda *args: Logic.handle_key("forward"))
-    bcd.bind("<ButtonPress>", lambda *args: Logic.handle_key("backward"))
-    lft.bind("<ButtonPress>", lambda *args: Logic.handle_key("left"))
-    rgt.bind("<ButtonPress>", lambda *args: Logic.handle_key("right"))
-    scn.bind("<ButtonPress>", lambda *args: Logic.scan())
+    fwd.bind("<ButtonPress>", lambda *args: logic.handle_key("forward"))
+    bcd.bind("<ButtonPress>", lambda *args: logic.handle_key("backward"))
+    lft.bind("<ButtonPress>", lambda *args: logic.handle_key("left"))
+    rgt.bind("<ButtonPress>", lambda *args: logic.handle_key("right"))
+    scn.bind("<ButtonPress>", lambda *args: logic.scan())
 
     # add handlers for button realeases
-    fwd.bind("<ButtonRelease>", lambda *args: Logic.handle_key("forward", False))
-    bcd.bind("<ButtonRelease>", lambda *args: Logic.handle_key("backward", False))
-    lft.bind("<ButtonRelease>", lambda *args: Logic.handle_key("left", False))
-    rgt.bind("<ButtonRelease>", lambda *args: Logic.handle_key("right", False))
+    fwd.bind("<ButtonRelease>", lambda *args: logic.handle_key("forward", False))
+    bcd.bind("<ButtonRelease>", lambda *args: logic.handle_key("backward", False))
+    lft.bind("<ButtonRelease>", lambda *args: logic.handle_key("left", False))
+    rgt.bind("<ButtonRelease>", lambda *args: logic.handle_key("right", False))
 
     # apply to key bindings
-    window.bind("<space>", lambda *args: Logic.scan())
-    window.bind("<Key>", lambda *args: Logic.handle_key(args[0].char))
-    window.bind("<Up>", lambda *args: Logic.handle_key("up_arrow"))
-    window.bind("<Down>", lambda *args: Logic.handle_key("down_arrow"))
-    window.bind("<Left>", lambda *args: Logic.handle_key("left_arrow"))
-    window.bind("<Right>", lambda *args: Logic.handle_key("right_arrow"))
-    window.bind("<KeyRelease>", lambda *args: Logic.handle_key(args[0].char, False))
-    window.bind("<KeyRelease-Up>", lambda *args: Logic.handle_key("up_arrow", False))
-    window.bind("<KeyRelease-Down>", lambda *args: Logic.handle_key("down_arrow", False))
-    window.bind("<KeyRelease-Left>", lambda *args: Logic.handle_key("left_arrow", False))
-    window.bind("<KeyRelease-Right>", lambda *args: Logic.handle_key("right_arrow", False))
+    window.bind("<space>", lambda *args: logic.scan())
+    window.bind("<Key>", lambda *args: logic.handle_key(args[0].char))
+    window.bind("<Up>", lambda *args: logic.handle_key("up_arrow"))
+    window.bind("<Down>", lambda *args: logic.handle_key("down_arrow"))
+    window.bind("<Left>", lambda *args: logic.handle_key("left_arrow"))
+    window.bind("<Right>", lambda *args: logic.handle_key("right_arrow"))
+    window.bind("<KeyRelease>", lambda *args: logic.handle_key(args[0].char, False))
+    window.bind("<KeyRelease-Up>", lambda *args: logic.handle_key("up_arrow", False))
+    window.bind("<KeyRelease-Down>", lambda *args: logic.handle_key("down_arrow", False))
+    window.bind("<KeyRelease-Left>", lambda *args: logic.handle_key("left_arrow", False))
+    window.bind("<KeyRelease-Right>", lambda *args: logic.handle_key("right_arrow", False))
 
     # set grid widths
     Grid.rowconfigure(window, 0, weight=1)
