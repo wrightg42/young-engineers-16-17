@@ -70,7 +70,7 @@ def get_gps_data():
     if get_gps:
         # Get gps location of bot
         coms.send(10) 
-        gps = Coms.read()
+        gps = coms.read()
 
         # Check GPS data is valid
         if gps != None and gps[0] == 12 and len(gps) == 13: 
